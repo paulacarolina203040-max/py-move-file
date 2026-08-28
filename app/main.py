@@ -8,20 +8,24 @@ def move_file(command: str) -> None:
 
     _, source, destination = parts
 
+    destination = os.path.normpath(destination)
     destination_dir = os.path.dirname(destination)
+
     if destination_dir:
         current_path = ""
-        for folder in destination_dir.split("/"):
-            current_path = (
-                os.path.join(current_path, folder)
-                if current_path
-                else folder
-            )
-            if not os.path.isdir(current_path):
-                try:
-                    os.mkdir(current_path)
-                except (FileExistsError, OSError):
-                    pass
+        normalized_dir = destination_dir.replace("\\", "/")
+        for folder in normalized_dir.split("/"):
+            if folder:
+                current_path = (
+                    os.path.join(current_path, folder)
+                    if current_path
+                    else folder
+                )
+                if not os.path.isdir(current_path):
+                    try:
+                        os.mkdir(current_path)
+                    except (FileExistsError, OSError):
+                        pass
 
     with open(source, "r", encoding="utf-8") as src_file:
         content = src_file.read()
