@@ -13,7 +13,7 @@ def move_file(command: str) -> None:
         current_path = ""
         for folder in destination_dir.split("/"):
             current_path = (
-                f"{current_path}/{folder}"
+                os.path.join(current_path, folder)
                 if current_path
                 else folder
             )
